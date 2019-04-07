@@ -28,7 +28,7 @@
         {
 
             echo '<br>';
-            echo '<input type="checkbox" name="flavors[]" value="'.$key.'"';
+            echo '<input type="checkbox" name="flavors[]" value="'.$value.'"';
             echo '<label>'.$value.'<label>';
         }
 
@@ -51,10 +51,29 @@
                 }
             }
 
+            if(isset($_POST['flavors']))
+            {
+                $flavors = $_POST['flavors'];
+            }
+
+
             if(empty($errors))
             {
 
                 echo'<h1>Thank you ' .($_POST['name']). ' for your order.</h1>';
+                echo '<h3>Order Summary: </h3>';
+                echo '<ul>';
+
+                foreach($_POST['flavors'] as $selected)
+                {
+                    echo "<li>".$selected ."</li>";
+                }
+                echo '</ul>';
+
+                $howMany = count($flavors);
+                $total = $howMany * 3.5;
+
+                echo 'Total: $'.number_format($total,2);
 
 
             }
