@@ -1,7 +1,3 @@
-<?php
-
-?>
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -14,18 +10,72 @@
 </head>
 <body>
     <h1>Cupcake Fundraiser</h1>
-    Your Name: <input type="text" value="Please enter your name" size="35">
+    <form action="index.php" method="post">
+        Your Name: <input type="text" name="name"  size="35">
 
     <label><p>Cupcake Flavors</p>
 
-        <input type="checkbox" checked="checked" name="flavors[]" value="grasshopper">The Grasshopper<br>
-        <input type="checkbox" name="flavors[]" value="whiskey maple bacon">Whiskey Maple Bacon<br>
-        <input type="checkbox" name="flavors[]" value="carrot walnut">Carrot Walnut<br>
-        <input type="checkbox" name="flavors[]" value="salted caramel">Salted Caramel Cupcake<br>
-        <input type="checkbox" name="flavors[]" value="red velvet">Red Velvet<br>
-        <input type="checkbox" name="flavors[]" value="lemon drop">Lemon Drop<br>
-        <input type="checkbox" name="flavors[]" value="tiramisu">Tiramisu<br>
-    </label>
+        <?php
+        $flavors = array("grasshopper" => "The Grasshopper",
+            "maple" => "Whiskey Maple Bacon",
+            "carrot" => "Carrot Walnut",
+            "caramel" => "Salted Caramel Cupcake",
+            "velvet" => "Red Velvet",
+            "lemon" => "Lemon Drop",
+            "tiramisu" => "Tiramisu");
 
+        foreach ($flavors as $key => $value)
+        {
+
+            echo '<br>';
+            echo '<input type="checkbox" name="flavors[]" value="'.$key.'"';
+            echo '<label>'.$value.'<label>';
+        }
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST')
+        {
+            $errors = []; // Initialize an error array.
+            // Check for a first name:
+            if (empty($_POST['name']))
+            {
+                $errors[] = 'You forgot to enter your name.';
+            }
+            //counting how many flavors are selected
+            $num = count($_POST['flavors']);
+            //echo $num;
+            if(!isset($_POST['flavors']))
+            {
+                if($num<1)
+                {
+                    $errors[] = 'You must choose at least one flavor.';
+                }
+            }
+
+            if(empty($errors))
+            {
+
+                echo'<h1>Thank you ' .($_POST['name']). ' for your order.</h1>';
+
+
+            }
+
+            else
+            {
+                echo '<h1>Error!</h1>
+            <p class="error">The following error(s) occurred:<br>';
+                foreach ($errors as $msg) { // Print each error.
+                    echo " - $msg<br>\n";
+                }
+
+            }
+        }
+
+
+        ?>
+    </label>
+    <br>
+    <br>
+    <button type="submit">Order</button>
+    </form>
 </body>
 </html>
